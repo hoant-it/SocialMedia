@@ -1,0 +1,25 @@
+p, span, h1{
+    user-select: none;
+}
+body{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+button{
+    cursor: pointer;
+}
+
+:root {
+    --primary: #fe2c55;
+    --black: #000;
+    --white: #fff;
+    --text-color: #rgba(22, 24, 35, 0.03);
+    --font-family: 'ProximaNova', sans-serif;
+  
+    //Defaul layout
+    --default-layout-header-height: 60px;
+    // --default-layout-width: 1150px;
+    --default-layout-width: 100%;
+    --default-layout-horizontal-space: 24px;
+    --default-layout-width-sidebar: 356px;
+  }
