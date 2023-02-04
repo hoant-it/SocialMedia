@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/hoant-it/SocialMedia/client/static/css/main.dab7072b.css",
+    "main.js": "/hoant-it/SocialMedia/client/static/js/main.030a2897.js",
+    "static/js/787.c4e7f8f9.chunk.js": "/hoant-it/SocialMedia/client/static/js/787.c4e7f8f9.chunk.js",
+    "index.html": "/hoant-it/SocialMedia/client/index.html",
+    "main.dab7072b.css.map": "/hoant-it/SocialMedia/client/static/css/main.dab7072b.css.map",
+    "main.030a2897.js.map": "/hoant-it/SocialMedia/client/static/js/main.030a2897.js.map",
+    "787.c4e7f8f9.chunk.js.map": "/hoant-it/SocialMedia/client/static/js/787.c4e7f8f9.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.dab7072b.css",
+    "static/js/main.030a2897.js"
+  ]
+}
