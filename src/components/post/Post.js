@@ -6,15 +6,69 @@ import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { Link } from "react-router-dom";
 import Comments from "../comments/Comments";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import moment from "moment";
 
-function Post({post}) {
-    
+import { useQuery,useQueryClient,useMutation } from "@tanstack/react-query";
+import { makeRequest } from "../../axios";
+import { AuthContext } from "../../context/authContext";
+
+function Post({ post }) {
   const [commentOpen, setCommentOpen] = useState(false);
-  const [liked,setLike]=useState(false)
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const { currentUser } = useContext(AuthContext);
+  // const [liked,setLike]=useState(false)
+
+  // console.log(post)
+
+  const { isLoading, error, data } = useQuery(["likes",post.id], () =>
+    makeRequest.get("/likes?postId=" + post.id).then((res) => {
+      return res.data;
+    })
+  );
+
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation(
+    (liked) => {
+     if(liked)  return makeRequest.delete("/likes?postId="+post.id)
+     return makeRequest.post("/likes", {postId:post.id});
+    
+    },
+    {
+      onSuccess: () => {
+        // Invalidate and refetch
+        queryClient.invalidateQueries(["likes"]);
+      },
+    }
+  );
+
+  const handleLike=()=>{
+    const isuserId=data.includes(currentUser.id)
+    mutation.mutate(isuserId)
+  }
+
+
+  const deleteMutation = useMutation(
+    (postId) => {
+      return makeRequest.delete("/posts/"+postId)
+   
+    },
+    {
+      onSuccess: () => {
+        // Invalidate and refetch
+        queryClient.invalidateQueries(["posts"]);
+      },
+    }
+  );
+
+  const handleDelete=()=>{
+    deleteMutation.mutate(post.id)
+  }
 
   //TEMPORARY
-//   const liked = false;
+  //   const liked = false;
 
   return (
     <div className="post">
@@ -29,19 +83,26 @@ function Post({post}) {
               >
                 <span className="name">{post.name}</span>
               </Link>
-              <span className="date">1 min ago</span>
+              <span className="date">{moment(post.createAt).fromNow()}</span>
             </div>
           </div>
-          <MoreHorizIcon />
+          <MoreHorizIcon onClick={()=>setMenuOpen(!menuOpen)} />
+          {menuOpen && post.userId===currentUser.id&& <button onClick={handleDelete}> delete</button>}
         </div>
         <div className="content">
           <p>{post.desc}</p>
-          <img src={post.img} alt="" />
+          <img src={"/upload/" + post.img} alt="" />
         </div>
         <div className="info">
           <div className="item">
-            {liked ? <FavoriteOutlinedIcon onClick={()=>setLike(!liked)} /> : <FavoriteBorderOutlinedIcon onClick={()=>setLike(!liked)} />}
-            12 Likes
+            {/* {liked ? <FavoriteOutlinedIcon onClick={()=>setLike(!liked)} /> : <FavoriteBorderOutlinedIcon onClick={()=>setLike(!liked)}
+             />} */}
+            {data && data.includes(currentUser.id) ? (
+              <FavoriteOutlinedIcon style={{ colo: "red" }} onClick={handleLike}/>
+            ) : (
+              <FavoriteBorderOutlinedIcon onClick={handleLike}/>
+            )}
+            {error ? "Er" : isLoading ? "loading..." : data.length} Likes
           </div>
           <div className="item" onClick={() => setCommentOpen(!commentOpen)}>
             <TextsmsOutlinedIcon />
@@ -52,7 +113,7 @@ function Post({post}) {
             Share
           </div>
         </div>
-        {commentOpen && <Comments />}
+        {commentOpen && <Comments postId={post.id} />}
       </div>
     </div>
   );

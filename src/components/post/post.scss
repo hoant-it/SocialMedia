@@ -15,6 +15,7 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
+                position: relative;
 
                 .userInfo {
                     display: flex;
@@ -42,6 +43,21 @@
 
                         }
                     }
+
+
+                }
+                button{
+                    position: absolute;
+                    top: 30px;
+                    right: 0;
+                    border: none;
+                    // background-color: #b89191;
+                    padding: 5px;
+                    cursor: pointer;
+                    background-color: #b89191;
+                    border-radius: 3px;
+                    // border-radius: 3px solid;
+
 
 
                 }

@@ -36,7 +36,7 @@ function Navbar() {
         <GridViewOutlinedIcon className="icon"></GridViewOutlinedIcon>
 
         <div className="search">
-          <SearchOutlinedIcon lassName="icon"></SearchOutlinedIcon>
+          <SearchOutlinedIcon className="icon"></SearchOutlinedIcon>
           <input type={"text"} placeholder="Search..."></input>
         </div>
       </div>
